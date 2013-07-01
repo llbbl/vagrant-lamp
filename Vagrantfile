@@ -7,11 +7,7 @@ Vagrant.configure("2") do |config|
   config.vm.box_url = "http://files.vagrantup.com/precise64.box"
     
   # Set the Timezone to something useful
-  config.vm.provision :shell, :inline => "echo \"America/Chicago\" | sudo tee /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata"  
-	
-	# Update the packages on the server
-	#config.vm.provision :shell, :inline => "apt-get update --fix-missing"	
-	#config.vm.provision :shell, :inline => "apt-get install -y libaugeas-ruby"
+  config.vm.provision :shell, :inline => "echo \"America/Chicago\" | sudo tee /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata" 
   
   # Setup the synced folder for local development
   config.vm.synced_folder "./www", "/var/www", id: "vagrant-root"
@@ -33,9 +29,7 @@ Vagrant.configure("2") do |config|
 	    puppet.module_path = "modules"
 	    puppet.options = ['--verbose']
 	  end
-	  
-		lamp_config.vm.provision :shell, :inline => "composer create-project symfony/framework-standard-edition /vagrant/www/symfony 2.3.0"
-	  
+	  	  
   end
   
    
