@@ -10,7 +10,8 @@ Vagrant.configure("2") do |config|
   config.vm.provision :shell, :inline => "echo \"America/Chicago\" | sudo tee /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata"  
 	
 	# Update the packages on the server
-	config.vm.provision :shell, :inline => "apt-get update --fix-missing"
+	#config.vm.provision :shell, :inline => "apt-get update --fix-missing"	
+	#config.vm.provision :shell, :inline => "apt-get install -y libaugeas-ruby"
   
   # Setup the synced folder for local development
   config.vm.synced_folder "./www", "/var/www", id: "vagrant-root"
@@ -27,10 +28,16 @@ Vagrant.configure("2") do |config|
     lamp_config.ssh.forward_agent = true
        
 	  lamp_config.vm.provision :puppet do |puppet|
+ 
 	    puppet.manifests_path = "manifests"
 	    puppet.module_path = "modules"
 	    puppet.options = ['--verbose']
 	  end
+	  
+		lamp_config.vm.provision :shell, :inline => "composer create-project symfony/framework-standard-edition /vagrant/www/symfony 2.3.0"
+	  
   end
+  
+   
   
 end

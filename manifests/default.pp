@@ -5,6 +5,7 @@ exec { 'apt-get update':
   timeout => 60,
   tries   => 3,
 }
+	
 
 class { 'apt':
   always_apt_update => true,
@@ -20,7 +21,7 @@ file { '/home/vagrant/.bash_aliases':
   source => 'puppet:///modules/puphpet/dot/.bash_aliases',
 }
 
-package { ['build-essential', 'vim', 'curl', 'git-core']:
+package { ['build-essential', 'vim', 'curl']:
   ensure  => 'installed',
   require => Exec['apt-get update'],
 }
@@ -52,7 +53,6 @@ class { 'php':
 }
 
 php::module { 'php5-mysql': }
-php::module { 'php5-cli': }
 php::module { 'php5-curl': }
 php::module { 'php5-intl': }
 php::module { 'php5-mcrypt': }
@@ -62,12 +62,21 @@ class { 'php::devel':
 }
 
 
-class { 'php::composer': }
 
 class { 'mysql':
   root_password => 'qwerty1234',
   require       => Exec['apt-get update'],
 }
 
+
+include git
+
+
+
+class { 'composer':
+  command_name => 'composer',
+  target_dir   => '/usr/local/bin',
+  auto_update => true
+}
 
 
